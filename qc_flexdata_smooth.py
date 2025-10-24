@@ -5,12 +5,14 @@ youtube.com/c/hisanimations
 """
 ##### QC FILE IMPORTER ######################################
 import bpy
+import hashlib
 properties = []
 context = bpy.context
 obj = context.object
 import time
+name_map = {}
 ##### FILE INPUTS #####
-qcfile = r"PUT QC FILE DIRECTORY HERE (KEEP QUOTATION MARKS)"
+qcfile = r"Path to QC FILE"
 
 '''READ THIS: I have removed the need of manually typing in
 the names of the mesh-data block and the key block.
@@ -524,21 +526,47 @@ act_key.active_shape_key_index = 1
 counter = 0
 for i in sk_NF_ind:
     act_key.active_shape_key_index = i
+    shape_key = bpy.context.object.active_shape_key
+    fcurve = shape_key.driver_add("value")
+    # Generate base name
+    original_name = "NA_in_qc_" + sk_NF[counter]
+    propname = original_name
     if expfix == 0:
-        obj.data["NA_in_qc_" + sk_NF[counter]] = 0.0
-        obj.data['_RNA_UI']["NA_in_qc_" + sk_NF[counter]] = {"description":f"NA_in_qc_{sk_NF[counter]}",
-            "default": 0.0,
-            "min":float(0.0),
-            "max":float(1.0),
-            "soft_min":float(0.0),
-            "soft_max":float(1.0),
-            "is_overridable_library":0,
-        }
-        bpy.context.object.active_shape_key.driver_add("value").driver.variables.new()
-        bpy.context.object.active_shape_key.driver_add("value").driver.variables[0].name = f'NA_in_qc_{sk_NF[counter]}'
-        bpy.context.object.active_shape_key.driver_add("value").driver.variables[0].targets[0].id_type = "MESH"
-        bpy.context.object.active_shape_key.driver_add("value").driver.variables[0].targets[0].id = bpy.data.meshes[mdbloq]
-        bpy.context.object.active_shape_key.driver_add("value").driver.variables[0].targets[0].data_path = f'["NA_in_qc_{sk_NF[counter]}"]'
-    bpy.context.object.active_shape_key.driver_add("value").driver.expression = f"NA_in_qc_{sk_NF[counter]}"
+        # Ensure Blender's 63-character limit isn’t exceeded
+        if len(propname) > 63:
+            short_hash = hashlib.sha1(propname.encode()).hexdigest()[:8]
+            propname = propname[:50] + "_" + short_hash
+            
+            # Save the mapping from original → shortened name
+            name_map[original_name] = propname
+
+            # Now safely create the property
+            obj.data[propname] = 0.0
+            obj.data['_RNA_UI'][propname] = {
+                "description": propname,
+                "default": 0.0,
+                "min": float(0.0),
+                "max": float(1.0),
+                "soft_min": float(0.0),
+                "soft_max": float(1.0),
+                "is_overridable_library": 1,
+            }
+            
+            # Build the original intended name
+            original_name = f"NA_in_qc_{sk_NF[counter]}"
+
+            # Use shortened name if it was truncated earlier
+            propname = name_map.get(original_name, original_name)
+
+            # Create the driver variable
+            var = fcurve.driver.variables.new()
+            var.name = propname
+            target = var.targets[0]
+            target.id_type = "MESH"
+            target.id = bpy.data.meshes[mdbloq]
+            target.data_path = f'["{propname}"]'
+
+    # Assign the driver expression to use the same property
+    fcurve.driver.expression = propname
     counter += 1
 act_key.active_shape_key_index = 1
