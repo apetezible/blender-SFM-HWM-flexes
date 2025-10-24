@@ -17,6 +17,9 @@ In qcfile (line 13), put the qc file's directory in between the quotation marks.
 
 Once all is done, make sure you have the model selected, run the script, and you should now have HWM flexes on your model! ALMOST exactly like in sfm.
 
+![that-time-when-heavy-worked-for-gray-mann-just-after-he-v0-kniku1nv91qe1](https://github.com/user-attachments/assets/19834362-a0c2-4730-b5ac-e2dff6ebf69c)
+
+
 # Things to know, and tips and tricks
 Again, this does not work in Blender 3.0, due to it having a different RNA UI structure.
 
