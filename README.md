@@ -26,6 +26,8 @@ You may notice that the face looks different. This is due to some shape keys hav
 
 If your model uses a second qc file for it's HWM flex data, like Alaxe's HWM Skeleton, put the directory of whatever qc file it uses in qcfile2 (line 22), and put secqc (line 24) to 1. HWM Skeleton uses sniper's qc file, but another model might user another qc file.
 
+We also implemented a fix when implementing expfix=1 which writes a file inside blender called driver_functions.py that executes commands that saves these expressions to blender. This makes it easier for linking a rig into a new scene. The expressions don't go to the new file with the linked rig, therefore by also linking this file and registering it for autorun everytime blender opens the scene containing the linked rig, it will save the expressions correctly. After registering the script, don't forget to save and reopen the scene for the drivers to update with the new missing information, there... it should all work now!
+
 # You should be good to go!
 Feel free to ask any questions you have, or an issue regarding the support of a file.
 If you join my discord server, I'll be quicker to respond regarding any question you'll have.
