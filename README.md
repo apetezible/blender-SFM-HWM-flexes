@@ -13,7 +13,7 @@ Open the vta_separator.py script in a text editor window in blender, then put in
 Next, import the .qc file using BST. Once done, open a new text in the text editor, and open the latest qc_flex_data_importer.py script. 
 (alternatively, you could import the smd file first, then import the vta file to apply shape keys.)
 
-In qcfile (line 13), put the qc file's directory in between the quotation marks. 
+In qcfile (line 13), put the qc file's directory in between the quotation marks. (Tip: In Windows 10 - 11, you can locate the file, select it, then shift + right click and a new option should appear called "Copy as Path")
 
 Once all is done, make sure you have the model selected, run the script, and you should now have HWM flexes on your model! ALMOST exactly like in sfm.
 
