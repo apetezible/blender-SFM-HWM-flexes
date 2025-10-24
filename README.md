@@ -20,13 +20,13 @@ Once all is done, make sure you have the model selected, run the script, and you
 # Things to know, and tips and tricks
 Again, this does not work in Blender 3.0, due to it having a different RNA UI structure.
 
-When reopening the file, you will see a prompt warning you about my script. I mean, my script is pretty self explanitory and has like 400 lines of code, so just click "Allow execution". If it really worries you, feel free to look through many lines of code.
+When reopening the file, you will see a prompt warning you about my script. I mean, my script is pretty self-explanatory and has like 400 lines of code, so just click "Allow execution". If it really worries you, feel free to look through many lines of code.
 
 You may notice that the face looks different. This is due to some shape keys having expressions that are longer than 256 characters. To fix this, just set "expfix" to 1 (line 27), and run the script. Everything will then go back to normal.
 
 If your model uses a second qc file for it's HWM flex data, like Alaxe's HWM Skeleton, put the directory of whatever qc file it uses in qcfile2 (line 22), and put secqc (line 24) to 1. HWM Skeleton uses sniper's qc file, but another model might user another qc file.
 
-We also implemented a fix when implementing expfix=1 which writes a file inside blender called driver_functions.py that executes commands that saves these expressions to blender. This makes it easier for linking a rig into a new scene. The expressions don't go to the new file with the linked rig, therefore by also linking this file and registering it for autorun everytime blender opens the scene containing the linked rig, it will save the expressions correctly. After registering the script, don't forget to save and reopen the scene for the drivers to update with the new missing information, there... it should all work now!
+We also implemented a fix when implementing expfix=1, which writes a ready-to-run script file inside Blender called driver_functions.py that, when run, executes commands that save these expressions to Blender. This makes it easier to link a rig into a new scene. The expressions don't go to the new file with the linked rig, therefore by also linking this file and registering it (the tickbox under Text>Register) for autorun everytime Blender opens the scene containing the linked rig, it will save the expressions correctly. After registering the script, don't forget to save and reopen the scene for the drivers to update with the new missing information, there. It should all work now!
 
 # You should be good to go!
 Feel free to ask any questions you have, or an issue regarding the support of a file.
